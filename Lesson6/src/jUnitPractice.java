@@ -13,6 +13,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class jUnitPractice {
 	WebDriver driver; 
+	String searchFieldXpath = "//input[@id='globalQuery']";
+	String searchButtonXpath = "//input[@class='search_button']";
+	String searchTerm = "java";	
+	String searchTermXpath = "//input[@value='" + searchTerm + "']";
+	String itemsShowingXpath = "//span[@class='items_showing_count']";
 
 	@Before 
 	public void setUp() { 
@@ -29,89 +34,88 @@ public class jUnitPractice {
 	
 	@Test
 	public void searchCheck() throws InterruptedException {
-		driver.get("http://www.vpl.ca"); 
+		driver.get("http://www.vpl.ca");  
 		
-		WebElement searchField = driver.findElement(By.xpath("//input[@id='globalQuery']")); 
-		
+		WebElement searchField = driver.findElement(By.xpath(searchFieldXpath));
 		searchField.click(); 
 		searchField.clear(); 
 		searchField.sendKeys("java");
 		
-		WebElement searchButton = driver.findElement(By.xpath("//input[@class='search_button']"));
+		WebElement searchButton = driver.findElement(By.xpath(searchButtonXpath));
 		searchButton.click(); 
 			
 		Thread.sleep(3000);
 		
-		assertEquals("https://vpl.bibliocommons.com/search?q=java&t=keyword", driver.getCurrentUrl());
+		String pageUrl = "https://vpl.bibliocommons.com/search?q=" + searchTerm + "&t=keyword";
+		assertEquals(pageUrl, driver.getCurrentUrl());
 		
-		assertEquals("Search | Vancouver Public Library | BiblioCommons", driver.getTitle());
+		String pageTitle = "Search | Vancouver Public Library | BiblioCommons";
+		assertEquals(pageTitle, driver.getTitle());
 
-		assertTrue(driver.findElement(By.xpath("//span[@class='items_showing_count']")).isDisplayed());
+		assertTrue(driver.findElement(By.xpath(itemsShowingXpath)).isDisplayed());
 	}
 
 	@Test
 	public void checkPageTwo() throws InterruptedException {
-		//Since these lines are repetitive, could I put this in the @Before section?
+		
 		driver.get("http://www.vpl.ca"); 
-		
-		WebElement searchField = driver.findElement(By.xpath("//input[@id='globalQuery']")); 
-		
+				
+		WebElement searchField = driver.findElement(By.xpath(searchFieldXpath));
 		searchField.click(); 
 		searchField.clear(); 
 		searchField.sendKeys("java");
 		
-		WebElement searchButton = driver.findElement(By.xpath("//input[@class='search_button']"));
-		searchButton.click(); 
-			
-		Thread.sleep(3000);
-		//End of repeat
+		WebElement searchButton = driver.findElement(By.xpath(searchButtonXpath));
+		searchButton.click();
 		
 		WebElement pageTwoLink = driver.findElement(By.xpath("//a[@testid='link_page2']"));
 		pageTwoLink.click();
 		
 		Thread.sleep(3000);
 		
-		assertEquals("https://vpl.bibliocommons.com/search?display_quantity=25&page=2&q=java&t=keyword", driver.getCurrentUrl());
+		String pageUrl = "https://vpl.bibliocommons.com/search?display_quantity=25&page=2&q=" + searchTerm + "&t=keyword";
+		assertEquals(pageUrl, driver.getCurrentUrl());
 		
-		assertTrue(driver.findElement(By.xpath("//li[@class='active']/a[@testid='link_page2']")).isDisplayed());
+		String pageLinkXpath = "//a[@testid='link_page2']";
+		assertTrue(driver.findElement(By.xpath(pageLinkXpath)).isDisplayed());
 		
-		assertTrue(driver.findElement(By.xpath("//input[@value='java']")).isDisplayed());
+		assertTrue(driver.findElement(By.xpath(searchTermXpath)).isDisplayed());
 		
-		assertEquals("26 - 50 of 898 items", driver.findElement(By.xpath("//span[@class='items_showing_count']")).getText());
+		assertEquals("26 - 50 of 898 items", driver.findElement(By.xpath(itemsShowingXpath)).getText());
 		
-		assertTrue(driver.findElement(By.xpath("//span[@class='items_showing_count']")).isDisplayed());
+		assertTrue(driver.findElement(By.xpath(itemsShowingXpath)).isDisplayed());
 	}
 
 	@Test
 	public void checkPageFive() throws InterruptedException {
-		//Since these lines are repetitive, could I put this in the @Before section?
+		
 		driver.get("http://www.vpl.ca"); 
 		
-		WebElement searchField = driver.findElement(By.xpath("//input[@id='globalQuery']")); 
-		
+		WebElement searchField = driver.findElement(By.xpath(searchFieldXpath));
 		searchField.click(); 
 		searchField.clear(); 
 		searchField.sendKeys("java");
 		
-		WebElement searchButton = driver.findElement(By.xpath("//input[@class='search_button']"));
-		searchButton.click(); 
-			
-		Thread.sleep(3000);
-		//End of repeat
+		WebElement searchButton = driver.findElement(By.xpath(searchButtonXpath));
+		searchButton.click();
 		
-		WebElement pageFiveLink = driver.findElement(By.xpath("//a[@testid='link_page5']"));
+		Thread.sleep(3000);
+		
+		String pageFiveLinkXpath = "//a[@testid='link_page5']";
+		WebElement pageFiveLink = driver.findElement(By.xpath(pageFiveLinkXpath));
 		pageFiveLink.click();
 		
 		Thread.sleep(3000);
 		
-		assertEquals("https://vpl.bibliocommons.com/search?display_quantity=25&page=5&q=java&t=keyword", driver.getCurrentUrl());
+		String pageUrl = "https://vpl.bibliocommons.com/search?display_quantity=25&page=5&q=" + searchTerm + "&t=keyword";
+		assertEquals(pageUrl, driver.getCurrentUrl());
 		
-		assertTrue(driver.findElement(By.xpath("//li[@class='active']/a[@testid='link_page5']")).isDisplayed());
+		assertTrue(driver.findElement(By.xpath(pageFiveLinkXpath)).isDisplayed());
 		
-		assertTrue(driver.findElement(By.xpath("//input[@value='java']")).isDisplayed());
+		assertTrue(driver.findElement(By.xpath(searchTermXpath)).isDisplayed());
 		
-		assertEquals("101 - 125 of 898 items", driver.findElement(By.xpath("//span[@class='items_showing_count']")).getText());
+		assertEquals("101 - 125 of 898 items", driver.findElement(By.xpath(itemsShowingXpath)).getText());
 		
-		assertTrue(driver.findElement(By.xpath("//span[@class='items_showing_count']")).isDisplayed());
+		assertTrue(driver.findElement(By.xpath(itemsShowingXpath)).isDisplayed());
 	}
 }
